@@ -68,8 +68,11 @@ command :list do |c|
   c.example 'description', 'command example'
   c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
-    tasks_for_dir_list(Dir.pwd).each do |t|
-      puts "- #{t}"
+    global_tasks = tasks_at_path("#{@gloable_folder}/#{@task_file_name}")
+    other_tasks = tasks_for_dir_list(Dir.pwd)
+    tasks = [global_tasks, other_tasks].flatten
+    tasks.each_with_index do |t, index|
+      puts "(#{index + 1}) - #{t}"
     end
   end
 end
