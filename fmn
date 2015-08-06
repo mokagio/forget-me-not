@@ -4,8 +4,42 @@ require 'rubygems'
 require 'commander/import'
 require 'psych'
 
-gloable_folder = '~/Dropbox'
-task_file_name = 'tasks.yml'
+@gloable_folder = '~/Dropbox'
+@task_file_name = 'tasks.yml'
+@tasks_key = 'tasks'
+
+def add_task(task, path)
+  yaml = Psych.load_file(path)
+end
+
+def directories_list(current_dir)
+  dirs = [current_dir]
+  parent_dir = File.expand_path('..', current_dir)
+  while parent_dir != current_dir do
+    dirs.push parent_dir
+    current_dir = parent_dir
+    parent_dir = File.expand_path('..', current_dir)
+  end
+  return dirs.reverse
+end
+
+def tasks_at_path(path)
+  if File.exists?(path) then
+    return Psych.load_file(path)[@tasks_key]
+  end
+  return nil
+end
+
+def tasks_for_dir_list(current_dir)
+  tasks = []
+  dirs = directories_list(Dir.pwd)
+  dirs.each do |dir|
+    path = "#{dir}/#{@task_file_name}"
+    sub_tasks = tasks_at_path(path)
+    tasks.push(sub_tasks) if sub_tasks
+  end
+  tasks = tasks.flatten
+end
 
 program :name, 'Forget Me Not'
 program :version, '0.0.1'
@@ -18,26 +52,7 @@ command :list do |c|
   c.example 'description', 'command example'
   c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
-    current_dir = Dir.pwd
-    dirs = [current_dir]
-    while File.expand_path('..', current_dir) != current_dir do
-      dir = File.expand_path('..', current_dir)
-      dirs.push dir
-      current_dir = dir
-    end
-
-    tasks = []
-    dirs.each do |dir|
-      path = "#{dir}/#{task_file_name}"
-      if File.exists?(path) then
-        yaml = Psych.load_file(path)
-        tasks.push(yaml["tasks"])
-      end
-    end
-
-    tasks = tasks.flatten
-
-    tasks.each do |t|
+    tasks_for_dir_list(Dir.pwd).each do |t|
       puts "- #{t}"
     end
   end
