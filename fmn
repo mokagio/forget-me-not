@@ -4,7 +4,7 @@ require 'rubygems'
 require 'commander/import'
 require 'psych'
 
-@gloable_folder = '~/Dropbox'
+@gloable_folder = "#{Dir.home}/Dropbox"
 @task_file_name = 'tasks.yml'
 @tasks_key = 'tasks'
 
@@ -49,10 +49,10 @@ end
 
 def write_tasks_to_path(tasks, path)
   yaml = task_yaml_at_path(path)
-  ymal = [] unless yaml
+  yaml = {} unless yaml
   yaml[@tasks_key] = tasks
 
-  File.open(path, 'w') do |file|
+  File.open(path, 'a') do |file|
     file.write(Psych.dump(yaml))
   end
 end
@@ -82,14 +82,14 @@ command :add do |c|
   c.option '-g', '--global', 'Add to the global list'
   c.action do |args, options|
     task = args.join(' ')
+    path = ""
     if options.global
-      say 'Will add task to global list'
+      path = "#{@gloable_folder}/#{@task_file_name}"
     else
-      say 'Will add task to local list'
+      path = "#{Dir.pwd}/#{@task_file_name}"
     end
 
-    path = "#{Dir.pwd}/#{@task_file_name}"
-    tasks = tasks_at_path(path)
+    tasks = tasks_at_path(path) || []
     tasks.push(task)
 
     write_tasks_to_path(tasks, path)
