@@ -32,8 +32,10 @@ end
 
 def tasks_at_path(path)
   yaml = task_yaml_at_path(path)
-  return yaml[@tasks_key] if yaml
-  return nil
+  return nil unless yaml
+  return yaml[@tasks_key].map do |t|
+    { task: t, path: path }
+  end
 end
 
 def tasks_for_dir_list(current_dir)
@@ -47,12 +49,18 @@ def tasks_for_dir_list(current_dir)
   tasks = tasks.flatten
 end
 
+def all_tasks(current_dir)
+  global_tasks = tasks_at_path("#{@gloable_folder}/#{@task_file_name}")
+  other_tasks = tasks_for_dir_list(current_dir)
+  return [global_tasks, other_tasks].flatten
+end
+
 def write_tasks_to_path(tasks, path)
   yaml = task_yaml_at_path(path)
   yaml = {} unless yaml
   yaml[@tasks_key] = tasks
 
-  File.open(path, 'a') do |file|
+  File.open(path, 'w') do |file|
     file.write(Psych.dump(yaml))
   end
 end
@@ -68,11 +76,8 @@ command :list do |c|
   c.example 'description', 'command example'
   c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
-    global_tasks = tasks_at_path("#{@gloable_folder}/#{@task_file_name}")
-    other_tasks = tasks_for_dir_list(Dir.pwd)
-    tasks = [global_tasks, other_tasks].flatten
-    tasks.each_with_index do |t, index|
-      puts "(#{index + 1}) - #{t}"
+    all_tasks(Dir.pwd).each_with_index do |t, index|
+      puts "(#{index + 1}) - #{t[:task]}"
     end
   end
 end
@@ -93,6 +98,7 @@ command :add do |c|
     end
 
     tasks = tasks_at_path(path) || []
+    tasks = tasks.map { |t| t[:task] }
     tasks.push(task)
 
     write_tasks_to_path(tasks, path)
@@ -101,12 +107,24 @@ end
 
 command :done do |c|
   c.syntax = 'fmn done [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
+  c.summary = 'Mark a task as done.'
+  c.description = 'Mark a task as done, removing it from the list.'
+  c.example 'Mark a task as done.', 'fmn done 1'
   c.action do |args, options|
-    say 'Delete feature not implemented yet'
+    return unless args.length >= 1
+
+    # TODO: check for non numeric arg
+    index = args[0].to_i - 1
+
+    # TODO: check for unexisting index
+    task_to_remove = all_tasks(Dir.pwd)[index]
+    tasks = tasks_at_path(task_to_remove[:path])
+
+    # TODO: this is quite silly, how can we make it better?
+    # TODO: what about tasks with the same name. Does it even make sense?
+    tasks.delete_if { |t| t[:task] == task_to_remove[:task] }
+
+    write_tasks_to_path(tasks.map { |t| t[:task] }, task_to_remove[:path])
   end
 end
 
