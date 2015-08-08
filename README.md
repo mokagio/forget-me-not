@@ -63,6 +63,20 @@ Juggling multiple clients and side projects it's important to keep the scope rel
 
 On top of that I'm quite a forgetful person, and I tend to get sidetracked. That is why I want my task manager to be **in my face**, and that's where Forget-Me-Not comes in handy.
 
+## Shell Integration
+
+### zsh
+
+Add this to your `.zshrc`, or `.zshprompt`:
+
+```
+precmd() { fmn list --prompt }
+```
+
+## Tips
+
+You my want to add `.fmn.yml` to your global `.gitignore`.
+
 ## Install
 
 _TODO_
