@@ -76,8 +76,13 @@ command :list do |c|
   c.example 'description', 'command example'
   c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
-    all_tasks(Dir.pwd).each_with_index do |t, index|
-      puts "(#{index + 1}) - #{t[:task]}"
+    tasks = all_tasks(Dir.pwd)
+    if tasks.empty?
+      puts "All tasks done. Good on ya :)"
+    else
+      tasks.each_with_index do |t, index|
+        puts "(#{index + 1}) - #{t[:task]}"
+      end
     end
   end
 end
