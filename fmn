@@ -5,7 +5,7 @@ require 'commander/import'
 require 'psych'
 
 @gloable_folder = "#{Dir.home}/Dropbox"
-@task_file_name = 'tasks.yml'
+@task_file_name = '.fmn.yml'
 @tasks_key = 'tasks'
 
 def add_task(task, path)
