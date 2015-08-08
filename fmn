@@ -74,11 +74,11 @@ command :list do |c|
   c.summary = ''
   c.description = ''
   c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
+  c.option '--prompt', 'Use this option when integrating with the shell prompt.'
   c.action do |args, options|
     tasks = all_tasks(Dir.pwd)
     if tasks.empty?
-      puts "All tasks done. Good on ya :)"
+      puts 'All tasks done. Good on ya :)' unless options.prompt
     else
       tasks.each_with_index do |t, index|
         puts "(#{index + 1}) - #{t[:task]}"
