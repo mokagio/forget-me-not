@@ -52,7 +52,7 @@ end
 def all_tasks(current_dir)
   global_tasks = tasks_at_path("#{@gloable_folder}/#{@task_file_name}")
   other_tasks = tasks_for_dir_list(current_dir)
-  return [global_tasks, other_tasks].flatten
+  return [global_tasks, other_tasks].flatten.reject { |e| e.nil? }
 end
 
 def write_tasks_to_path(tasks, path)
