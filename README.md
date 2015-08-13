@@ -75,7 +75,15 @@ precmd() { fmn list --prompt }
 
 ## Tips
 
-You my want to add `.fmn.yml` to your global `.gitignore`.
+You might want to add `.fmn.yml` to your global `.gitignore`.
+
+You might also want to speed up your workflow using aliases, for [example](https://github.com/mokagio/dotfiles/blob/master/aliases):
+
+```
+alias t='fmn list'
+alias ta='fmn add'
+alias td='fmn done'
+```
 
 ## Install
 
