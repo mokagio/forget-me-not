@@ -1,12 +1,21 @@
+PATH
+  remote: .
+  specs:
+    forget-me-not (0.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
     commander (4.3.4)
       highline (~> 1.7.2)
     highline (1.7.3)
+    rake (10.4.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 1.9)
   commander (~> 4.3.4)
+  forget-me-not!
+  rake (~> 10.0)
