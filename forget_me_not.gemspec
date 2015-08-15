@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'fmn/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "forget-me-not"
+  spec.name          = "forget_me_not"
   spec.version       = FMN::VERSION
   spec.authors       = ["Giovanni Lodi"]
   spec.email         = ["giovanni.lodi42@gmail.com"]

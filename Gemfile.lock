@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    forget-me-not (0.0.1)
+    forget_me_not (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -17,5 +17,5 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.9)
   commander (~> 4.3.4)
-  forget-me-not!
+  forget_me_not!
   rake (~> 10.0)
