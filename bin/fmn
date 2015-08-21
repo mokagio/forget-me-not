@@ -8,10 +8,6 @@ require 'psych'
 @task_file_name = '.fmn.yml'
 @tasks_key = 'tasks'
 
-def add_task(task, path)
-  yaml = Psych.load_file(path)
-end
-
 def directories_list(current_dir)
   dirs = [current_dir]
   parent_dir = File.expand_path('..', current_dir)
