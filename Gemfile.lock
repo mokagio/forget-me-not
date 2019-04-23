@@ -2,14 +2,14 @@ PATH
   remote: .
   specs:
     forget_me_not (0.0.2)
-      commander (~> 4.3.4)
+      commander (~> 4)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    commander (4.3.8)
-      highline (~> 1.7.2)
-    highline (1.7.10)
+    commander (4.4.7)
+      highline (~> 2.0.0)
+    highline (2.0.2)
     rake (10.5.0)
 
 PLATFORMS
@@ -21,4 +21,4 @@ DEPENDENCIES
   rake (~> 10.0)
 
 BUNDLED WITH
-   1.16.2
+   1.17.2
